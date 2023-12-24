@@ -4,7 +4,7 @@ import theme from '../theme';
 
 const style = StyleSheet.create({
   text: {
-    color: '#FFFFFF',
+    color: 'white',
     fontWeight: theme.fontWeights.bold,
   },
   flexItem: {
