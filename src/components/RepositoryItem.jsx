@@ -1,6 +1,6 @@
 import { View, StyleSheet, Image } from 'react-native';
-import Text from './Text';
 
+import Text from './Text';
 import theme from '../theme';
 
 const styles = StyleSheet.create({
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   statsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     marginTop: 10,
   },
   statsCountContainer: {
