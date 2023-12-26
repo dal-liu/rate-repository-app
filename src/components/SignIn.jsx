@@ -30,6 +30,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: theme.colors.primary,
   },
+  buttonPressed: {
+    backgroundColor: theme.colors.primaryPressed,
+    borderColor: theme.colors.primaryPressed,
+  },
   buttonText: {
     color: 'white',
     fontWeight: theme.fontWeights.bold,
@@ -42,6 +46,12 @@ const validationSchema = yup.object().shape({
 });
 
 const SignInForm = ({ onSubmit }) => {
+  const buttonStyle = ({ pressed }) => [
+    styles.button,
+    styles.element,
+    pressed && styles.buttonPressed,
+  ];
+
   return (
     <View style={styles.container}>
       <FormikTextInput
@@ -55,7 +65,7 @@ const SignInForm = ({ onSubmit }) => {
         secureTextEntry
         style={styles.element}
       />
-      <Pressable onPress={onSubmit} style={[styles.element, styles.button]}>
+      <Pressable onPress={onSubmit} style={buttonStyle}>
         <Text style={styles.buttonText}>Sign in</Text>
       </Pressable>
     </View>
