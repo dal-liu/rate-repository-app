@@ -34,7 +34,7 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         <AppBarLink text="Repositories" to="/" />
-        {data.me ? (
+        {data && data.me ? (
           <AppBarButton text="Sign out" onPress={signOut} />
         ) : (
           <AppBarLink text="Sign in" to="/signin" />
