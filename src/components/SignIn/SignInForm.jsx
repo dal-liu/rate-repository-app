@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primary,
   },
   buttonPressed: {
-    backgroundColor: theme.colors.primaryPressed,
-    borderColor: theme.colors.primaryPressed,
+    opacity: 0.85,
   },
   buttonText: {
     color: 'white',
