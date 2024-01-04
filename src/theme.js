@@ -24,6 +24,34 @@ const theme = {
     normal: '400',
     bold: '700',
   },
+  forms: {
+    container: {
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      backgroundColor: 'white',
+    },
+    element: {
+      marginVertical: 5,
+      borderRadius: 5,
+      paddingVertical: 15,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+    },
+    button: {
+      backgroundColor: '#0366d6',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: '#0366d6',
+    },
+    buttonPressed: {
+      opacity: 0.85,
+    },
+    buttonText: {
+      color: 'white',
+      fontWeight: '700',
+    },
+  },
 };
 
 export default theme;

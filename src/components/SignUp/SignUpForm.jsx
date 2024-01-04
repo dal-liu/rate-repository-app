@@ -4,7 +4,7 @@ import FormikTextInput from '../FormikTextInput';
 import Text from '../Text';
 import theme from '../../theme';
 
-const CreateReviewForm = ({ onSubmit }) => {
+const SignUpForm = ({ onSubmit }) => {
   const buttonStyle = ({ pressed }) => [
     theme.forms.button,
     theme.forms.element,
@@ -14,31 +14,27 @@ const CreateReviewForm = ({ onSubmit }) => {
   return (
     <View style={theme.forms.container}>
       <FormikTextInput
-        name="ownerName"
-        placeholder="Repository owner name"
+        name="username"
+        placeholder="Username"
         style={theme.forms.element}
       />
       <FormikTextInput
-        name="repositoryName"
-        placeholder="Repository name"
+        name="password"
+        placeholder="Password"
+        secureTextEntry
         style={theme.forms.element}
       />
       <FormikTextInput
-        name="rating"
-        placeholder="Rating between 0 and 100"
+        name="passwordConfirmation"
+        placeholder="Password confirmation"
+        secureTextEntry
         style={theme.forms.element}
-      />
-      <FormikTextInput
-        name="text"
-        placeholder="Review"
-        style={theme.forms.element}
-        multiline
       />
       <Pressable onPress={onSubmit} style={buttonStyle}>
-        <Text style={theme.forms.buttonText}>Create a review</Text>
+        <Text style={theme.forms.buttonText}>Sign up</Text>
       </Pressable>
     </View>
   );
 };
 
-export default CreateReviewForm;
+export default SignUpForm;
