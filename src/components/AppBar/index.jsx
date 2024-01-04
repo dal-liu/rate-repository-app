@@ -2,6 +2,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { useQuery } from '@apollo/client';
 import { useApolloClient } from '@apollo/client';
+import { useNavigate, useLocation } from 'react-router-native';
 
 import AppBarLink from './AppBarLink';
 import theme from '../../theme';
@@ -24,10 +25,15 @@ const AppBar = () => {
   const { data } = useQuery(ME);
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const signOut = async () => {
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
+    if (location.pathname === '/createreview') {
+      navigate('/');
+    }
   };
 
   return (
@@ -35,7 +41,10 @@ const AppBar = () => {
       <ScrollView horizontal>
         <AppBarLink text="Repositories" to="/" />
         {data && data.me ? (
-          <AppBarButton text="Sign out" onPress={signOut} />
+          <>
+            <AppBarLink text="Create a review" to="/createreview" />
+            <AppBarButton text="Sign out" onPress={signOut} />
+          </>
         ) : (
           <AppBarLink text="Sign in" to="/signin" />
         )}
