@@ -5,11 +5,7 @@ import Text from '../Text';
 import theme from '../../theme';
 
 const SignUpForm = ({ onSubmit }) => {
-  const buttonStyle = ({ pressed }) => [
-    theme.forms.button,
-    theme.forms.element,
-    pressed && theme.forms.buttonPressed,
-  ];
+  const buttonStyle = [theme.forms.button, theme.forms.element];
 
   return (
     <View style={theme.forms.container}>

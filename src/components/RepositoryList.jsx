@@ -1,17 +1,28 @@
 import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Menu, Searchbar } from 'react-native-paper';
 
 import RepositoryItem from './RepositoryItem';
+import Text from './Text';
 import useRepositories from '../hooks/useRepositories';
+import theme from '../theme';
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
   },
-  pressed: {
-    opacity: 0.85,
+  orderButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  menu: {
+    paddingTop: 50,
   },
 });
 
@@ -22,7 +33,6 @@ export const RepositoryListContainer = ({ repositories, children }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
-  const pressableStyle = ({ pressed }) => pressed && styles.pressed;
 
   const handlePress = (id) => {
     navigate(`/repositories/${id}`);
@@ -33,11 +43,7 @@ export const RepositoryListContainer = ({ repositories, children }) => {
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <Pressable
-          key={item.id}
-          onPress={() => handlePress(item.id)}
-          style={pressableStyle}
-        >
+        <Pressable key={item.id} onPress={() => handlePress(item.id)}>
           <RepositoryItem item={item} />
         </Pressable>
       )}
@@ -47,25 +53,71 @@ export const RepositoryListContainer = ({ repositories, children }) => {
 };
 
 const RepositoryList = () => {
-  const [order, setOrder] = useState('CREATED_AT DESC');
-  const { repositories } = useRepositories(order);
+  const [orderMessage, setOrderMessage] = useState('Latest repositories');
+  const [orderBy, setOrderBy] = useState('CREATED_AT');
+  const [orderDirection, setOrderDirection] = useState('DESC');
+  const [visible, setVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const { repositories } = useRepositories(orderBy, orderDirection);
+
+  const showMenu = () => setVisible(true);
+  const hideMenu = () => setVisible(false);
+  const onChangeSearch = (query) => setSearchQuery(query);
 
   return (
     <RepositoryListContainer repositories={repositories}>
-      <Picker
-        selectedValue={order}
-        onValueChange={(itemValue) => setOrder(itemValue)}
+      <Menu
+        visible={visible}
+        onDismiss={hideMenu}
+        anchor={
+          <Pressable onPress={showMenu} style={styles.orderButton}>
+            <Text>{orderMessage}</Text>
+            {!visible && (
+              <MaterialCommunityIcons
+                name="menu-down"
+                size={24}
+                color={theme.colors.textSecondary}
+              />
+            )}
+            {visible && (
+              <MaterialCommunityIcons
+                name="menu-up"
+                size={24}
+                color={theme.colors.textSecondary}
+              />
+            )}
+          </Pressable>
+        }
+        style={styles.menu}
       >
-        <Picker.Item label="Latest repositories" value="CREATED_AT DESC" />
-        <Picker.Item
-          label="Highest rated repositories"
-          value="RATING_AVERAGE DESC"
+        <Menu.Item
+          onPress={() => {
+            setOrderMessage('Latest repositories');
+            setOrderBy('CREATED_AT');
+            setOrderDirection('DESC');
+            hideMenu();
+          }}
+          title="Latest repositories"
         />
-        <Picker.Item
-          label="Lowest rated repositories"
-          value="RATING_AVERAGE ASC"
+        <Menu.Item
+          onPress={() => {
+            setOrderMessage('Highest rated repositories');
+            setOrderBy('RATING_AVERAGE');
+            setOrderDirection('DESC');
+            hideMenu();
+          }}
+          title="Highest rated repositories"
         />
-      </Picker>
+        <Menu.Item
+          onPress={() => {
+            setOrderMessage('Lowest rated repositories');
+            setOrderBy('RATING_AVERAGE');
+            setOrderDirection('ASC');
+            hideMenu();
+          }}
+          title="Lowest rated repositories"
+        />
+      </Menu>
     </RepositoryListContainer>
   );
 };

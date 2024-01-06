@@ -31,11 +31,6 @@ const styles = StyleSheet.create({
 });
 
 const RepositoryItem = ({ item, showLink }) => {
-  const buttonStyle = ({ pressed }) => [
-    styles.button,
-    pressed && styles.buttonPressed,
-  ];
-
   const openLink = () => {
     Linking.openURL(item.url);
   };
@@ -55,7 +50,7 @@ const RepositoryItem = ({ item, showLink }) => {
         reviewCount={item.reviewCount}
       />
       {showLink && (
-        <Pressable onPress={openLink} style={buttonStyle}>
+        <Pressable onPress={openLink} style={styles.button}>
           <Text style={styles.text}>Open in GitHub</Text>
         </Pressable>
       )}
