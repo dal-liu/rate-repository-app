@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-native';
 import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Menu, Searchbar } from 'react-native-paper';
+import { useDebounce } from 'use-debounce';
 
 import RepositoryItem from './RepositoryItem';
 import Text from './Text';
@@ -23,6 +24,9 @@ const styles = StyleSheet.create({
   },
   menu: {
     paddingTop: 50,
+  },
+  searchBar: {
+    margin: 10,
   },
 });
 
@@ -58,7 +62,12 @@ const RepositoryList = () => {
   const [orderDirection, setOrderDirection] = useState('DESC');
   const [visible, setVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const { repositories } = useRepositories(orderBy, orderDirection);
+  const [searchKeyword] = useDebounce(searchQuery, 500);
+  const { repositories } = useRepositories(
+    orderBy,
+    orderDirection,
+    searchKeyword
+  );
 
   const showMenu = () => setVisible(true);
   const hideMenu = () => setVisible(false);
@@ -66,58 +75,67 @@ const RepositoryList = () => {
 
   return (
     <RepositoryListContainer repositories={repositories}>
-      <Menu
-        visible={visible}
-        onDismiss={hideMenu}
-        anchor={
-          <Pressable onPress={showMenu} style={styles.orderButton}>
-            <Text>{orderMessage}</Text>
-            {!visible && (
-              <MaterialCommunityIcons
-                name="menu-down"
-                size={24}
-                color={theme.colors.textSecondary}
-              />
-            )}
-            {visible && (
-              <MaterialCommunityIcons
-                name="menu-up"
-                size={24}
-                color={theme.colors.textSecondary}
-              />
-            )}
-          </Pressable>
-        }
-        style={styles.menu}
-      >
-        <Menu.Item
-          onPress={() => {
-            setOrderMessage('Latest repositories');
-            setOrderBy('CREATED_AT');
-            setOrderDirection('DESC');
-            hideMenu();
-          }}
-          title="Latest repositories"
+      <>
+        <Searchbar
+          placeholder="Search repositories"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+          style={styles.searchBar}
+          theme={{ colors: { primary: theme.colors.primary } }}
         />
-        <Menu.Item
-          onPress={() => {
-            setOrderMessage('Highest rated repositories');
-            setOrderBy('RATING_AVERAGE');
-            setOrderDirection('DESC');
-            hideMenu();
-          }}
-          title="Highest rated repositories"
-        />
-        <Menu.Item
-          onPress={() => {
-            setOrderMessage('Lowest rated repositories');
-            setOrderBy('RATING_AVERAGE');
-            setOrderDirection('ASC');
-            hideMenu();
-          }}
-          title="Lowest rated repositories"
-        />
-      </Menu>
+        <Menu
+          visible={visible}
+          onDismiss={hideMenu}
+          anchor={
+            <Pressable onPress={showMenu} style={styles.orderButton}>
+              <Text>{orderMessage}</Text>
+              {!visible && (
+                <MaterialCommunityIcons
+                  name="menu-down"
+                  size={24}
+                  color={theme.colors.textSecondary}
+                />
+              )}
+              {visible && (
+                <MaterialCommunityIcons
+                  name="menu-up"
+                  size={24}
+                  color={theme.colors.textSecondary}
+                />
+              )}
+            </Pressable>
+          }
+          style={styles.menu}
+        >
+          <Menu.Item
+            onPress={() => {
+              setOrderMessage('Latest repositories');
+              setOrderBy('CREATED_AT');
+              setOrderDirection('DESC');
+              hideMenu();
+            }}
+            title="Latest repositories"
+          />
+          <Menu.Item
+            onPress={() => {
+              setOrderMessage('Highest rated repositories');
+              setOrderBy('RATING_AVERAGE');
+              setOrderDirection('DESC');
+              hideMenu();
+            }}
+            title="Highest rated repositories"
+          />
+          <Menu.Item
+            onPress={() => {
+              setOrderMessage('Lowest rated repositories');
+              setOrderBy('RATING_AVERAGE');
+              setOrderDirection('ASC');
+              hideMenu();
+            }}
+            title="Lowest rated repositories"
+          />
+        </Menu>
+      </>
     </RepositoryListContainer>
   );
 };
