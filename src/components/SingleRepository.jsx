@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-native';
+import { FlatList } from 'react-native';
 
 import RepositoryItem from './RepositoryItem';
-import ReviewList from './ReviewList';
+import ReviewItem from './ReviewItem';
 import ItemSeparator from './ItemSeparator';
 import useRepository from '../hooks/useRepository';
 
@@ -27,9 +28,13 @@ const SingleRepository = () => {
   }
 
   return (
-    <ReviewList reviews={reviews}>
-      <RepositoryInfo repository={repository} />
-    </ReviewList>
+    <FlatList
+      data={reviews}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      keyExtractor={({ id }) => id}
+      ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+      ItemSeparatorComponent={ItemSeparator}
+    />
   );
 };
 

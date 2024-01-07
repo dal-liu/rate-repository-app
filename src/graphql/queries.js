@@ -32,6 +32,10 @@ export const ME = gql`
         edges {
           node {
             ...ReviewDetails
+            repository {
+              fullName
+              id
+            }
           }
         }
       }
@@ -49,6 +53,10 @@ export const REPOSITORY = gql`
         edges {
           node {
             ...ReviewDetails
+            user {
+              id
+              username
+            }
           }
         }
       }

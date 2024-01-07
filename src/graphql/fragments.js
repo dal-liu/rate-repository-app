@@ -20,12 +20,5 @@ export const REVIEW_DETAILS = gql`
     text
     rating
     createdAt
-    user {
-      id
-      username
-    }
-    repository {
-      fullName
-    }
   }
 `;
