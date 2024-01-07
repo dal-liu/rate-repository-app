@@ -44,9 +44,6 @@ const theme = {
       alignItems: 'center',
       borderColor: '#0366d6',
     },
-    buttonPressed: {
-      opacity: 0.85,
-    },
     buttonText: {
       color: 'white',
       fontWeight: '700',

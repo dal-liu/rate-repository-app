@@ -1,4 +1,4 @@
-import { FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { FlatList, StyleSheet, Pressable } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,13 +7,11 @@ import { useDebounce } from 'use-debounce';
 
 import RepositoryItem from './RepositoryItem';
 import Text from './Text';
+import ItemSeparator from './ItemSeparator';
 import useRepositories from '../hooks/useRepositories';
 import theme from '../theme';
 
 const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  },
   orderButton: {
     display: 'flex',
     flexDirection: 'row',
@@ -30,9 +28,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ItemSeparator = () => <View style={styles.separator} />;
-
-export const RepositoryListContainer = ({ repositories, children }) => {
+export const RepositoryListContainer = ({ repositories, ...props }) => {
   const navigate = useNavigate();
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -51,7 +47,7 @@ export const RepositoryListContainer = ({ repositories, children }) => {
           <RepositoryItem item={item} />
         </Pressable>
       )}
-      ListHeaderComponent={children}
+      ListHeaderComponent={props.children}
     />
   );
 };
