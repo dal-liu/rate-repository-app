@@ -28,7 +28,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export const RepositoryListContainer = ({ repositories, ...props }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  onEndReach,
+  ...props
+}) => {
   const navigate = useNavigate();
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -48,6 +52,8 @@ export const RepositoryListContainer = ({ repositories, ...props }) => {
         </Pressable>
       )}
       ListHeaderComponent={props.children}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -59,18 +65,25 @@ const RepositoryList = () => {
   const [visible, setVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchKeyword] = useDebounce(searchQuery, 500);
-  const { repositories } = useRepositories(
+  const { repositories, fetchMore } = useRepositories({
+    first: 8,
     orderBy,
     orderDirection,
-    searchKeyword
-  );
+    searchKeyword,
+  });
 
   const showMenu = () => setVisible(true);
   const hideMenu = () => setVisible(false);
   const onChangeSearch = (query) => setSearchQuery(query);
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
-    <RepositoryListContainer repositories={repositories}>
+    <RepositoryListContainer
+      repositories={repositories}
+      onEndReach={onEndReach}
+    >
       <>
         <Searchbar
           placeholder="Search repositories"

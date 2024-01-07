@@ -76,9 +76,11 @@ const UserReviewItem = ({ review, refetch }) => {
 };
 
 const ReviewsViewContainer = ({ reviews, refetch }) => {
+  const reviewNodes = reviews ? reviews.edges.map((edge) => edge.node) : [];
+
   return (
     <FlatList
-      data={reviews}
+      data={reviewNodes}
       renderItem={({ item }) => (
         <UserReviewItem review={item} refetch={refetch} />
       )}

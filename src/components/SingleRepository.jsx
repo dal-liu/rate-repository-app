@@ -17,8 +17,15 @@ const RepositoryInfo = ({ repository }) => {
 
 const SingleRepository = () => {
   const { id } = useParams();
+  const { repository, fetchMore } = useRepository({
+    first: 8,
+    id,
+  });
 
-  const { repository } = useRepository(id);
+  const onEndReach = () => {
+    fetchMore();
+  };
+
   const reviews = repository
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
@@ -34,6 +41,8 @@ const SingleRepository = () => {
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

@@ -8,7 +8,7 @@ const useReviews = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const reviews = data ? data.me.reviews.edges.map((edge) => edge.node) : [];
+  const reviews = data ? data.me.reviews : undefined;
 
   return { reviews, loading, refetch };
 };
